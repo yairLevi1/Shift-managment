@@ -16,5 +16,23 @@
 input{
   margin: 0px 10px;
 }
+.weekly-table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.day-header {
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+.day-cell {
+  border: 1px solid #ddd;
+  padding: 5px;
+  width: 14.28%;
+}
+
 
 

@@ -1,51 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
-const WeekTable = () => {
-  const [date, setDate] = useState(new Date());
-  const [days, setDays] = useState([]);
+function WeeklyTable() {
+  const [days, setDays] = useState([
+    { day: 'ראשון', text: '' },
+    { day: 'שני', text: '' },
+    { day: 'שלישי', text: '' },
+    { day: 'רביעי', text: '' },
+    { day: 'חמישי', text: '' },
+    { day: 'שישי', text: '' },
+    { day: 'שבת', text: '' },
+  ]);
 
-  useEffect(() => {
-    const daysOfWeek = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
-    const currentDay = date.getDay();
-    const startOfWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate() - currentDay);
-
-    const weekDays = [];
-    for (let i = 0; i < 7; i++) {
-      const day = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + i);
-      weekDays.push({
-        date: day.getDate(),
-        dayOfWeek: daysOfWeek[i],
-      });
-    }
-
-    setDays(weekDays);
-  }, [date]);
-
-  const handleDateChange = (event) => {
-    setDate(new Date(event.target.value));
+  const handleDayClick = (dayIndex, cellIndex) => {
+    // עדכן את הטקסט של היום שנלחץ
+    const newDays = [...days];
+    newDays[dayIndex].text = `יום ${dayIndex + 1}, תאריך ${cellIndex + 1} נלחץ!`;
+    setDays(newDays);
   };
 
   return (
-    <div>
-      <h1>טבלה שבועית</h1>
-      <input type="date" value={date.toISOString().split("T")[0]} onChange={handleDateChange} />
-      <table>
-        <thead>
-          <tr>
-            <th>יום</th>
-            <th>תאריך</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="weekly-table">
+      <thead>
+        <tr>
           {days.map((day) => (
-            <tr key={day.date}>
-              <td>{day.dayOfWeek}</td>
-              <td>{day.date}</td>
-            </tr>
+            <th key={day.day} className="day-header">
+              {day.day}
+            </th>
           ))}
-        </tbody>
-      </table>
+        </tr>
+      </thead>
+      <tbody>
+        {days.map((day, dayIndex) => (
+          <tr key={day.day}>
+            {Array(7).fill(0).map((_, cellIndex) => (
+              <td key={`${dayIndex}-${cellIndex}`} className="day-cell" onClick={() => handleDayClick(dayIndex, cellIndex)}>
+                <span className="day-text">{day.text}</span>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
       <br />
         <Link to="/">
           <button>דף הבית</button>
@@ -54,4 +49,8 @@ const WeekTable = () => {
   );
 };
 
-export default WeekTable;
+export default WeeklyTable;
+
+
+
+
